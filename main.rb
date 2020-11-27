@@ -6,7 +6,7 @@ module Enumerable
     end
   end
 
-  #2.my_each_with_index
+  # 2.my_each_with_index
   def my_each_with_index
     index = 0
     for item in self
@@ -15,18 +15,29 @@ module Enumerable
     end
   end
 
+  # 3.my_select
+  def my_select
+    select_arr_result = []
+    for item in self
+      if yield(item)
+        select_arr_result << item
+      end
+    end
+    select_arr_result
+  end
 end
 
+
 # 1. my_each
-puts 'my_each'
-puts '-------'
-puts [1, 2, 3].my_each { |elem| print "#{elem + 1} " } # => 2 3 4
-p (5..10).my_each { |i| puts "#{i}" }
-puts
-# 2. my_each_with_index
-puts 'my_each_with_index'
-puts '------------------'
-print [1, 2, 3].my_each_with_index { |elem, idx| puts "#{elem} : #{idx}" } # => 1 : 0, 2 : 1, 3 : 2
+# puts 'my_each'
+# puts '-------'
+# puts [1, 2, 3].my_each { |elem| print "#{elem + 1} " } # => 2 3 4
+# p (5..10).my_each { |i| puts "#{i}" }
+# puts
+# # 2. my_each_with_index
+# puts 'my_each_with_index'
+# puts '------------------'
+# print [1, 2, 3].my_each_with_index { |elem, idx| puts "#{elem} : #{idx}" } # => 1 : 0, 2 : 1, 3 : 2
 # p (1..3).my_each_with_index { |elem, idx| puts "
 # my_each_with_index_output = ''
 # enum=(1..5)
