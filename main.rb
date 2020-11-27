@@ -25,7 +25,51 @@ module Enumerable
     end
     select_arr_result
   end
+
+  # 4.my_all?
+  def my_all?
+    initial_value = false
+    length_array = self.length
+    true_counter1 = 0;
+    true_counter = 0;
+
+    # 1-step Check if array elemenets are all true
+    self.my_each do |element|
+      if !!element
+        true_counter1 += 1
+      end
+    end
+    is_true_without_block = true_counter1 == length_array ? initial_value = true : initial_value = false
+    
+
+    # 2-step Check if all array elements is in line with block condiction
+    self.my_each do |x|
+      if yield(x)
+        true_counter += 1
+      end
+    end
+    is_true = true_counter == length_array ? initial_value = true : initial_value = false
+    
+
+    # 3-step
+    if block_given?
+      is_true_without_block
+    else
+      is_true
+    end
+
+    initial_value
+  end
 end
+
+[1, 2, 3, 4, 5].my_all? # => true
+# [1, 2, 3, false].my_all? # => false
+
+
+
+
+
+
 
 
 # 1. my_each
@@ -54,6 +98,7 @@ end
 # p [6, 11, 13].my_select(&:odd?) # => [11, 13]
 # p (1..5).my_select(&:odd?) # => [1, 3, 5]
 # puts
+
 # # 4. my_all? (example test cases)
 # puts 'my_all?'
 # puts '-------'
@@ -71,6 +116,7 @@ end
 # p (1..5).my_all?(&false_block) # false
 # p [1, 2.2, 3, 0.6].my_all?( ) #=> True
 # puts
+
 # # 5. my_any? (example test cases)
 # puts 'my_any?'
 # puts '-------'
