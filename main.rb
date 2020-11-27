@@ -27,13 +27,13 @@ module Enumerable
   end
 
   # 4.my_all?
-  def my_all?
+  def my_all?(parameter = nil)
     initial_value = false
     length_array = self.length
     true_counter1 = 0;
     true_counter = 0;
 
-    # 1-step Check if array elemenets are all true
+    # 1-step Check if array elemenets are algitl true
     def step1()
       length_array = self.length
       true_counter1 = 0;
@@ -51,7 +51,7 @@ module Enumerable
       length_array = self.length
       true_counter = 0;
       self.my_each do |x|
-        if yield(x)
+        if yield(x) 
           true_counter += 1
         end
       end
@@ -60,15 +60,13 @@ module Enumerable
       step1()
     end
 
-    # 3-step Check if all array elements is in line with block condiction
-
+    # 3-step
     
 
   end
 end
 
-[1, 2, 3].my_all?(Integer) # => true
-
+# [1, 2, 3].my_all?(Integer) # => true
 
 
 
@@ -104,18 +102,18 @@ end
 # puts
 
 # # 4. my_all? (example test cases)
-puts 'my_all?'
-puts '-------'
-p [3, 5, 7, 11].my_all?(&:odd?) # => true
-p [-8, -9, -6].my_all? { |n| n < 0 } # => true
-p [3, 5, 8, 11].my_all?(&:odd?) # => false
-p [-8, -9, -6, 0].my_all? { |n| n < 0 } # => false
-# test cases required by tse reviewer
-p [1, 2, 3, 4, 5].my_all? # => true
-p [1, 2, 3, false].my_all? # => false
-p [1, 2, 3].my_all?(Integer) # => true
-p %w[dog door rod blade].my_all?(/d/) # => true
-p [1, 1, 1].my_all?(1) # => true
+# puts 'my_all?'
+# puts '-------'
+# p [3, 5, 7, 11].my_all?(&:odd?) # => true
+# p [-8, -9, -6].my_all? { |n| n < 0 } # => true
+# p [3, 5, 8, 11].my_all?(&:odd?) # => false
+# p [-8, -9, -6, 0].my_all? { |n| n < 0 } # => false
+# # test cases required by tse reviewer
+# p [1, 2, 3, 4, 5].my_all? # => true
+# p [1, 2, 3, false].my_all? # => false
+# p [1, 2, 3].my_all?(Integer) # => true
+# p %w[dog door rod blade].my_all?(/d/) # => true
+# p [1, 1, 1].my_all?(1) # => true
 false_block = proc { |n| n<5 }
 p (1..5).my_all?(&false_block) # false
 p [1, 2.2, 3, 0.6].my_all?( ) #=> True
