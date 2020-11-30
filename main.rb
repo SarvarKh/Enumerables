@@ -1,15 +1,13 @@
 module Enumerable
   # 1.my_each
-  def my_each
-    for item in self
-      yield(item)
-    end
+  def my_each(&block)
+    each(&block)
   end
 
   # 2.my_each_with_index
   def my_each_with_index
     index = 0
-    for item in self
+    each do |item|
       yield(item, index)
       index += 1
     end
@@ -18,58 +16,52 @@ module Enumerable
   # 3.my_select
   def my_select
     select_arr_result = []
-    for item in self
-      if yield(item)
-        select_arr_result << item
-      end
+    each do |item|
+      select_arr_result << item if yield(item)
     end
     select_arr_result
   end
 
   # 4.my_all?
-  def my_all?(parameter = nil)
-    initial_value = false
-    length_array = self.size
-    true_counter1 = 0;
-    true_counter = 0;
-
-    # 1-step Check if array elemenets are algitl true
-    def step1()
-      length_array = self.size
-      true_counter1 = 0;
-      self.my_each do |element|
-        if !!element
-          true_counter1 += 1
-        end
-      end
-      is_true_without_block = true_counter1 == length_array ? initial_value = true : initial_value = false
-      initial_value
-    end
-
-    # 2-step Check if there is block given
+  def my_all?(_parameter = nil)
+    length_array = size
+    true_counter1 = 0
+    true_counter = 0
+    # Check if there is block given
     if block_given?
-      length_array = self.size
-      true_counter = 0;
+      my_each do |x|
+        true_counter += 1 if yield(x)
+      end
+      true_counter == length_array
+    else
+      my_each do |element|
+        true_counter1 += 1 if !!element == true
+      end
+      true_counter1 == length_array
+    end
+  end
+
+  def my_any?(_parameter = nil)
+    initial_value = false
+    if block_given?
       self.my_each do |x|
         if yield(x) 
-          true_counter += 1
+          initial_value = true
         end
       end
-      is_true = true_counter == length_array ? initial_value = true : initial_value = false
+      initial_value
     else
-      step1()
+      my_each do |element|
+        if !!element
+          initial_value = true
+        end
+      end
+      initial_value
     end
-    
-
   end
+
+  
 end
-
-# [1, 2, 3].my_all?(Integer) # => true
-
-
-
-
-
 
 
 # 1. my_each
@@ -99,25 +91,25 @@ end
 # p (1..5).my_select(&:odd?) # => [1, 3, 5]
 # puts
 
-# # 4. my_all? (example test cases)
-puts 'my_all?'
-puts '-------'
-p [3, 5, 7, 11].my_all?(&:odd?) # => true
-p [-8, -9, -6].my_all? { |n| n < 0 } # => true
-p [3, 5, 8, 11].my_all?(&:odd?) # => false
-p [-8, -9, -6, 0].my_all? { |n| n < 0 } # => false
-# test cases required by tse reviewer
-p [1, 2, 3, 4, 5].my_all? # => true
-p [1, 2, 3, false].my_all? # => false
-p [1, 2, 3].my_all?(Integer) # => true
-p %w[dog door rod blade].my_all?(/d/) # => true
-p [1, 1, 1].my_all?(1) # => true
-false_block = proc { |n| n<5 }
-p (1..5).my_all?(&false_block) # false
-p [1, 2.2, 3, 0.6].my_all?( ) #=> True
-puts
+# 4. my_all? (example test cases)
+# puts 'my_all?'
+# puts '-------'
+# p [3, 5, 7, 11].my_all?(&:odd?) # => true
+# p [-8, -9, -6].my_all? { |n| n < 0 } # => true
+# p [3, 5, 8, 11].my_all?(&:odd?) # => false
+# p [-8, -9, -6, 0].my_all? { |n| n < 0 } # => false
+# # test cases required by tse reviewer
+# p [1, 2, 3, 4, 5].my_all? # => true
+# p [1, 2, 3, false].my_all? # => false
+# p [1, 2, 3].my_all?(Integer) # => true
+# p %w[dog door rod blade].my_all?(/d/) # => true
+# p [1, 1, 1].my_all?(1) # => true
+# false_block = proc { |n| n<5 }
+# p (1..5).my_all?(&false_block) # false
+# p [1, 2.2, 3, 0.6].my_all?( ) #=> True
+# puts
 
-# # 5. my_any? (example test cases)
+# 5. my_any? (example test cases)
 # puts 'my_any?'
 # puts '-------'
 # p [7, 10, 4, 5].my_any?(&:even?) # => true
@@ -133,22 +125,22 @@ puts
 # p [1, 2, 3].my_any?(1) # => true
 # p ["a", "cat", "dog"].my_any?('cat') #=>true
 # puts
-# # 6. my_none? (example test cases)
-# puts 'my_none?'
-# puts '--------'
-# p [3, 5, 7, 11].my_none?(&:even?) # => true
-# p [1, 2, 3, 4].my_none?{|num| num > 4} #=> true
-# p [nil, false, nil, false].my_none? # => true
-# p %w[sushi pizza burrito].my_none? { |word| word[0] == 'a' } # => true
-# p [3, 5, 4, 7, 11].my_none?(&:even?) # => false
-# p %w[asparagus sushi pizza apple burrito].my_none? { |word| word[0] == 'a' } # => false
-# # test cases required by tse reviewer
-# p [1, 2, 3].my_none? # => false
-# p [1, 2, 3].my_none?(String) # => true
-# p [1, 2, 3, 4, 5].my_none?(2) # => false
-# p [1, 2, 3].my_none?(4) # => true
-# p %w[sushi pizza burrito].my_none?(/y/) # => true
-# puts
+# 6. my_none? (example test cases)
+puts 'my_none?'
+puts '--------'
+p [3, 5, 7, 11].my_none?(&:even?) # => true
+p [1, 2, 3, 4].my_none?{|num| num > 4} #=> true
+p [nil, false, nil, false].my_none? # => true
+p %w[sushi pizza burrito].my_none? { |word| word[0] == 'a' } # => true
+p [3, 5, 4, 7, 11].my_none?(&:even?) # => false
+p %w[asparagus sushi pizza apple burrito].my_none? { |word| word[0] == 'a' } # => false
+# test cases required by tse reviewer
+p [1, 2, 3].my_none? # => false
+p [1, 2, 3].my_none?(String) # => true
+p [1, 2, 3, 4, 5].my_none?(2) # => false
+p [1, 2, 3].my_none?(4) # => true
+p %w[sushi pizza burrito].my_none?(/y/) # => true
+puts
 # # 7. my_count (example test cases)
 # puts 'my_count'
 # puts '--------'
