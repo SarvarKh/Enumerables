@@ -105,21 +105,14 @@ module Enumerable
 
   # 8.my_map
   def my_map(parameter = nil)
+    # puts parameter
     result_arr = []
-
-    my_each do |x|
-      result_arr << yield(x)
-    end
+    my_each {|x| result_arr << yield(x)} if parameter.nil?
+    
+    my_each {|x| result_arr << parameter.call(x)} unless parameter.nil?
     result_arr
-    
-    # case parameter
-    # when proc
-    #   my_each do |x|
-    #     result_arr << !yield(x)
-    #   end
-    # end
-    
   end
+
 end
 
 
@@ -215,15 +208,15 @@ end
 # puts
 
 
-# # 8. my_map
-puts 'my_map'
-puts '------'
-p [1, 2, 3].my_map { |n| 2 * n } # => [2,4,6]
-p %w[Hey Jude].my_map { |word| word + '?' } # => ["Hey?", "Jude?"]
-p [false, true].my_map(&:!) # => [true, false]
-my_proc = proc { |num| num > 10 }
-p [18, 22, 5, 6].my_map(my_proc) { |num| num < 10 } # => true true false false
-puts
+# 8. my_map
+# puts 'my_map'
+# puts '------'
+# p [1, 2, 3].my_map { |n| 2 * n } # => [2,4,6]
+# p %w[Hey Jude].my_map { |word| word + '?' } # => ["Hey?", "Jude?"]
+# p [false, true].my_map(&:!) # => [true, false]
+# my_proc = proc { |num| num > 10 }
+# p [18, 22, 5, 6].my_map(my_proc) { |num| num < 10 } # => true true false false
+# puts
 
 
 # # 9. my_inject
