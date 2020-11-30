@@ -102,7 +102,28 @@ module Enumerable
       end
     end
   end
+
+  # 8.my_map
+  def my_map(parameter = nil)
+    result_arr = []
+
+    my_each do |x|
+      result_arr << yield(x)
+    end
+    result_arr
+    
+    # case parameter
+    # when proc
+    #   my_each do |x|
+    #     result_arr << !yield(x)
+    #   end
+    # end
+    
+  end
 end
+
+
+
 
 # 1. my_each
 # puts 'my_each'
@@ -181,8 +202,6 @@ end
 # p [1, 2, 3].my_none?(4) # => true
 # p %w[sushi pizza burrito].my_none?(/y/) # => true
 # puts
-
-
 # # 7. my_count (example test cases)
 # puts 'my_count'
 # puts '--------'
@@ -197,14 +216,16 @@ end
 
 
 # # 8. my_map
-# puts 'my_map'
-# puts '------'
-# p [1, 2, 3].my_map { |n| 2 * n } # => [2,4,6]
-# p %w[Hey Jude].my_map { |word| word + '?' } # => ["Hey?", "Jude?"]
-# p [false, true].my_map(&:!) # => [true, false]
-# my_proc = proc { |num| num > 10 }
-# p [18, 22, 5, 6].my_map(my_proc) { |num| num < 10 } # => true true false false
-# puts
+puts 'my_map'
+puts '------'
+p [1, 2, 3].my_map { |n| 2 * n } # => [2,4,6]
+p %w[Hey Jude].my_map { |word| word + '?' } # => ["Hey?", "Jude?"]
+p [false, true].my_map(&:!) # => [true, false]
+my_proc = proc { |num| num > 10 }
+p [18, 22, 5, 6].my_map(my_proc) { |num| num < 10 } # => true true false false
+puts
+
+
 # # 9. my_inject
 # puts 'my_inject'
 # puts '---------'
