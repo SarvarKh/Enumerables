@@ -41,6 +41,7 @@ module Enumerable
     end
   end
 
+  # 5.my_any?
   def my_any?(_parameter = nil)
     initial_value = false
     if block_given?
@@ -56,6 +57,7 @@ module Enumerable
     end
   end
 
+  # 6.my_none?
   def my_none?(parameter = nil)
     initial_value = true
 
@@ -77,6 +79,28 @@ module Enumerable
       end
     end
     initial_value
+  end
+
+  # 7.my_count
+  def my_count(parameter = nil)
+    counter = 0
+    
+    if block_given?
+      my_each do |x|
+        if yield(x)
+          counter += 1
+        end
+      end
+      counter
+    else
+      case parameter
+      when nil
+        size
+      when Numeric
+        my_each {|x| counter += 1 if parameter == x}
+        counter
+      end
+    end
   end
 end
 
@@ -157,6 +181,8 @@ end
 # p [1, 2, 3].my_none?(4) # => true
 # p %w[sushi pizza burrito].my_none?(/y/) # => true
 # puts
+
+
 # # 7. my_count (example test cases)
 # puts 'my_count'
 # puts '--------'
@@ -168,6 +194,8 @@ end
 # p [1, 1, 1, 2, 3].my_count(1) # => 3
 # p (1..3).my_count #=> 3
 # puts
+
+
 # # 8. my_map
 # puts 'my_map'
 # puts '------'
