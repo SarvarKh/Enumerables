@@ -35,7 +35,7 @@ module Enumerable
       true_counter == length_array
     else
       my_each do |element|
-        true_counter1 += 1 if !!element == true
+        true_counter1 += 1 if !element.nil? == true
       end
       true_counter1 == length_array
     end
@@ -44,17 +44,13 @@ module Enumerable
   def my_any?(_parameter = nil)
     initial_value = false
     if block_given?
-      self.my_each do |x|
-        if yield(x) 
-          initial_value = true
-        end
+      my_each do |x|
+        initial_value = true if yield(x)
       end
       initial_value
     else
       my_each do |element|
-        if !!element
-          initial_value = true
-        end
+        initial_value = true unless element.nil?
       end
       initial_value
     end
@@ -64,10 +60,8 @@ module Enumerable
     initial_value = true
 
     if block_given?
-      self.my_each do |x|
-        if yield(x)
-          initial_value = false
-        end
+      my_each do |x|
+        initial_value = false if yield(x)
       end
       initial_value
     else
@@ -85,7 +79,6 @@ module Enumerable
     initial_value
   end
 end
-
 
 # 1. my_each
 # puts 'my_each'
