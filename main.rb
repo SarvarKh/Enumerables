@@ -60,7 +60,30 @@ module Enumerable
     end
   end
 
-  
+  def my_none?(parameter = nil)
+    initial_value = true
+
+    if block_given?
+      self.my_each do |x|
+        if yield(x)
+          initial_value = false
+        end
+      end
+      initial_value
+    else
+      case parameter
+      when nil
+        my_each { |x| return false unless x.nil? || !x }
+      when Regexp
+        my_each { |x| return false if x =~ parameter }
+      when Class
+        my_each { |x| return false if x.is_a? parameter }
+      else
+        my_each { |x| return false if x == parameter }
+      end
+    end
+    initial_value
+  end
 end
 
 
@@ -126,21 +149,21 @@ end
 # p ["a", "cat", "dog"].my_any?('cat') #=>true
 # puts
 # 6. my_none? (example test cases)
-puts 'my_none?'
-puts '--------'
-p [3, 5, 7, 11].my_none?(&:even?) # => true
-p [1, 2, 3, 4].my_none?{|num| num > 4} #=> true
-p [nil, false, nil, false].my_none? # => true
-p %w[sushi pizza burrito].my_none? { |word| word[0] == 'a' } # => true
-p [3, 5, 4, 7, 11].my_none?(&:even?) # => false
-p %w[asparagus sushi pizza apple burrito].my_none? { |word| word[0] == 'a' } # => false
-# test cases required by tse reviewer
-p [1, 2, 3].my_none? # => false
-p [1, 2, 3].my_none?(String) # => true
-p [1, 2, 3, 4, 5].my_none?(2) # => false
-p [1, 2, 3].my_none?(4) # => true
-p %w[sushi pizza burrito].my_none?(/y/) # => true
-puts
+# puts 'my_none?'
+# puts '--------'
+# p [3, 5, 7, 11].my_none?(&:even?) # => true
+# p [1, 2, 3, 4].my_none?{|num| num > 4} #=> true
+# p [nil, false, nil, false].my_none? # => true
+# p %w[sushi pizza burrito].my_none? { |word| word[0] == 'a' } # => true
+# p [3, 5, 4, 7, 11].my_none?(&:even?) # => false
+# p %w[asparagus sushi pizza apple burrito].my_none? { |word| word[0] == 'a' } # => false
+# # test cases required by tse reviewer
+# p [1, 2, 3].my_none? # => false
+# p [1, 2, 3].my_none?(String) # => true
+# p [1, 2, 3, 4, 5].my_none?(2) # => false
+# p [1, 2, 3].my_none?(4) # => true
+# p %w[sushi pizza burrito].my_none?(/y/) # => true
+# puts
 # # 7. my_count (example test cases)
 # puts 'my_count'
 # puts '--------'
