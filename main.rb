@@ -1,8 +1,12 @@
 module Enumerable
   # 1.my_each
   def my_each
-    for item in self
-      yield(item)
+    if !block_given?
+
+    else
+      for item in self
+        yield(item)
+      end
     end
   end
 
@@ -44,7 +48,7 @@ module Enumerable
   end
 
   # 5.my_any?
-  def my_any?(_parameter = nil)
+  def my_any?(parameter = nil)
     initial_value = false
     if block_given?
       my_each do |x|
@@ -52,8 +56,13 @@ module Enumerable
       end
       initial_value
     else
-      my_each do |element|
-        initial_value = true unless element.nil?
+      case parameter
+      when Regexp
+        my_each { |x| return true if x =~ parameter }
+      else
+        my_each do |element|
+          initial_value = true unless element.nil?
+        end
       end
       initial_value
     end
@@ -115,6 +124,7 @@ module Enumerable
     result_arr
   end
 
+  # 9.my_inject
   def my_inject(*parameter)
     (raise LocalJumpError if !block_given? && parameter[0].nil? && parameter[1].nil?)
     if block_given?
@@ -130,10 +140,38 @@ module Enumerable
       end
     end
     net
-  end
-
-  def multiply_els
-    self.my_inject {|sum, x| sum * x}
-  end
-
+  end  
 end
+
+def multiply_els(parameter)
+  parameter.my_inject {|sum, x| sum * x}
+end
+
+
+
+# 1. my_each
+puts 'my_each'
+puts '-------'
+puts [1, 2, 3].my_each { |elem| print "#{elem + 1} " } # => 2 3 4
+p (5..10).my_each { |i| puts "#{i}" }
+puts
+# 2. my_each_with_index
+puts 'my_each_with_index'
+puts '------------------'
+print [1, 2, 3].my_each_with_index { |elem, idx| puts "#{elem} : #{idx}" } # => 1 : 0, 2 : 1, 3 : 2
+# p (1..3).my_each_with_index { |elem, idx| puts "
+# my_each_with_index_output = ''
+# enum=(1..5)
+# block = proc { |num, idx| my_each_with_index_output += "Num: #{num}, idx: #{idx}\n" }
+p enum.each_with_index(&block)
+my_each_with_index_output = ''
+p enum.my_each_with_index(&block)
+puts
+# 3. my_select
+puts 'my_select'
+puts '---------'
+p [1, 2, 3, 8].my_select(&:even?) # => [2, 8]
+p [0, 2018, 1994, -7].my_select { |n| n > 0 } # => [2018, 1994]
+p [6, 11, 13].my_select(&:odd?) # => [11, 13]
+p (1..5).my_select(&:odd?) # => [1, 3, 5]
+puts
