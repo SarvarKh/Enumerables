@@ -29,15 +29,13 @@ module Enumerable
 
   # 4.my_all?
   def my_all?(parameter = nil)
-    length_array = size
     true_counter1 = 0
     true_counter = 0
-    # Check if there is block given
     if block_given?
       my_each do |x|
         true_counter += 1 if yield(x)
       end
-      true_counter == length_array
+      true_counter == size
     else
       case parameter
       when nil
@@ -47,12 +45,10 @@ module Enumerable
       when Class
         my_each {|x| return true if x.is_a? parameter}
       else
-      my_each do |element|
-        true_counter1 += 1 if !element.nil? == true
+        my_each {|element| true_counter1 += 1 if !element.nil? == true}
+        true_counter1 == size
       end
-      true_counter1 == length_array
     end
-  end
   end
 
   # 5.my_any?
@@ -72,9 +68,7 @@ module Enumerable
       when Class 
         my_each {|x| return true if x.is_a? parameter}
       else
-        my_each do |element|
-          initial_value = true unless element.nil?
-        end
+        my_each {|element| initial_value = true unless element.nil?}
       end
       initial_value
     end
