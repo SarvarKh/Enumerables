@@ -1,17 +1,15 @@
 module Enumerable
   # 1.my_each
   def my_each
-    if !block_given?
-
-    else
-      for item in self
-        yield(item)
-      end
+    return to_enum(:my_each) unless block_given?
+    for item in self
+      yield(item)
     end
   end
 
   # 2.my_each_with_index
   def my_each_with_index
+    return to_enum(:my_each_with_index) unless block_given?
     index = 0
     my_each do |item|
       yield(item, index)
@@ -21,6 +19,7 @@ module Enumerable
 
   # 3.my_select
   def my_select
+    return to_enum(:my_select) unless block_given?
     select_arr_result = []
     each do |item|
       select_arr_result << item if yield(item)
@@ -116,7 +115,7 @@ module Enumerable
 
   # 8.my_map
   def my_map(parameter = nil)
-    # puts parameter
+    return to_enum(:my_map) unless block_given?
     result_arr = []
     my_each {|x| result_arr << yield(x)} if parameter.nil?
     
@@ -146,32 +145,3 @@ end
 def multiply_els(parameter)
   parameter.my_inject {|sum, x| sum * x}
 end
-
-
-
-# 1. my_each
-puts 'my_each'
-puts '-------'
-puts [1, 2, 3].my_each { |elem| print "#{elem + 1} " } # => 2 3 4
-p (5..10).my_each { |i| puts "#{i}" }
-puts
-# 2. my_each_with_index
-puts 'my_each_with_index'
-puts '------------------'
-print [1, 2, 3].my_each_with_index { |elem, idx| puts "#{elem} : #{idx}" } # => 1 : 0, 2 : 1, 3 : 2
-# p (1..3).my_each_with_index { |elem, idx| puts "
-# my_each_with_index_output = ''
-# enum=(1..5)
-# block = proc { |num, idx| my_each_with_index_output += "Num: #{num}, idx: #{idx}\n" }
-p enum.each_with_index(&block)
-my_each_with_index_output = ''
-p enum.my_each_with_index(&block)
-puts
-# 3. my_select
-puts 'my_select'
-puts '---------'
-p [1, 2, 3, 8].my_select(&:even?) # => [2, 8]
-p [0, 2018, 1994, -7].my_select { |n| n > 0 } # => [2018, 1994]
-p [6, 11, 13].my_select(&:odd?) # => [11, 13]
-p (1..5).my_select(&:odd?) # => [1, 3, 5]
-puts
