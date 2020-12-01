@@ -28,7 +28,7 @@ module Enumerable
   end
 
   # 4.my_all?
-  def my_all?(_parameter = nil)
+  def my_all?(parameter = nil)
     length_array = size
     true_counter1 = 0
     true_counter = 0
@@ -39,11 +39,20 @@ module Enumerable
       end
       true_counter == length_array
     else
+      case parameter
+      when nil
+        my_each {|x| return true unless x.nil? || !x}
+      when Regexp
+        my_each {|x| return true if x =~ parameter}
+      when Class
+        my_each {|x| return true if x.is_a? parameter}
+      else
       my_each do |element|
         true_counter1 += 1 if !element.nil? == true
       end
       true_counter1 == length_array
     end
+  end
   end
 
   # 5.my_any?
@@ -56,8 +65,12 @@ module Enumerable
       initial_value
     else
       case parameter
+      when nil
+        my_each {|x| return true unless x.nil? || !x}
       when Regexp
         my_each { |x| return true if x =~ parameter }
+      when Class 
+        my_each {|x| return true if x.is_a? parameter}
       else
         my_each do |element|
           initial_value = true unless element.nil?
