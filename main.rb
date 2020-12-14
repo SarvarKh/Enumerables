@@ -1,15 +1,19 @@
+# rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/ModuleLength
 module Enumerable
   # 1.my_each
   def my_each
     return to_enum(:my_each) unless block_given?
+
     for item in self
       yield(item)
     end
+    item
   end
 
   # 2.my_each_with_index
   def my_each_with_index
     return to_enum(:my_each_with_index) unless block_given?
+
     index = 0
     my_each do |item|
       yield(item, index)
@@ -20,6 +24,7 @@ module Enumerable
   # 3.my_select
   def my_select
     return to_enum(:my_select) unless block_given?
+
     select_arr_result = []
     each do |item|
       select_arr_result << item if yield(item)
@@ -39,13 +44,13 @@ module Enumerable
     else
       case parameter
       when nil
-        my_each {|x| return true unless x.nil? || !x}
+        my_each { |x| return true unless x.nil? || !x }
       when Regexp
-        my_each {|x| return true if x =~ parameter}
+        my_each { |x| return true if x =~ parameter }
       when Class
-        my_each {|x| return true if x.is_a? parameter}
+        my_each { |x| return true if x.is_a? parameter }
       else
-        my_each {|element| true_counter1 += 1 if !element.nil? == true}
+        my_each { |element| true_counter1 += 1 if !element.nil? == true }
         true_counter1 == size
       end
     end
@@ -62,13 +67,13 @@ module Enumerable
     else
       case parameter
       when nil
-        my_each {|x| return true unless x.nil? || !x}
+        my_each { |x| return true unless x.nil? || !x }
       when Regexp
         my_each { |x| return true if x =~ parameter }
-      when Class 
-        my_each {|x| return true if x.is_a? parameter}
+      when Class
+        my_each { |x| return true if x.is_a? parameter }
       else
-        my_each {|element| initial_value = true unless element.nil?}
+        my_each { |element| initial_value = true unless element.nil? }
       end
       initial_value
     end
@@ -101,7 +106,7 @@ module Enumerable
   # 7.my_count
   def my_count(parameter = nil)
     counter = 0
-    
+
     if block_given?
       my_each do |x|
         if yield(x)
@@ -114,7 +119,7 @@ module Enumerable
       when nil
         size
       when Numeric
-        my_each {|x| counter += 1 if parameter == x}
+        my_each { |x| counter += 1 if parameter == x }
         counter
       end
     end
@@ -123,10 +128,11 @@ module Enumerable
   # 8.my_map
   def my_map(parameter = nil)
     return to_enum(:my_map) unless block_given?
+
     result_arr = []
-    my_each {|x| result_arr << yield(x)} if parameter.nil?
+    my_each { |x| result_arr << parameter.call(x) } unless parameter.nil?
     
-    my_each {|x| result_arr << parameter.call(x)} unless parameter.nil?
+    my_each { |x| result_arr << yield(x) } if parameter.nil?
     result_arr
   end
 
@@ -146,9 +152,9 @@ module Enumerable
       end
     end
     net
-  end  
+  end
 end
 
 def multiply_els(parameter)
-  parameter.my_inject {|sum, x| sum * x}
+  parameter.my_inject { |sum, x| sum * x }
 end
