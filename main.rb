@@ -158,3 +158,5 @@ end
 def multiply_els(parameter)
   parameter.my_inject { |sum, x| sum * x }
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/ModuleLength

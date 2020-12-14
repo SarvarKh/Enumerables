@@ -11,7 +11,7 @@ describe Enumerable do
 
   describe '#my_each_with_index' do
     it 'prints out elements and their indices' do
-      [1, 2, 3].my_each_with_index { |elem, idx|  "#{elem} : #{idx}" }
+      [1, 2, 3].my_each_with_index { |elem, idx| "#{elem} : #{idx}" }
       expect([1, 0, 2, 1, 3, 2]).to eql([1, 0, 2, 1, 3, 2])
     end
   end
@@ -60,7 +60,7 @@ describe Enumerable do
     end
 
     it 'checks if none of the numbers is greater than 4' do
-      expect([1, 2, 3, 4].my_none? { |x| x > 4}).to eql(true)
+      expect([1, 2, 3, 4].my_none? { |x| x > 4 }).to eql(true)
     end
 
     it 'checks if the array contains a word with a specific letter' do
