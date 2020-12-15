@@ -2,6 +2,8 @@ require_relative '../main.rb'
 
 describe Enumerable do
   arr = [3, 4, 7, 1, 2, 8]
+  highest_num = 8
+  my_hash = {min: 2, max: 5}
 
   describe '#my_each' do
     it 'Adding 1 to each array item' do
@@ -10,8 +12,12 @@ describe Enumerable do
       expect(array).to eql([2, 3, 4])
     end
 
-    it "my_each iteration testing with no block" do
-      expect(arr.my_each {|i|}).to eql(arr.each {|i|})
+    it 'my_each iteration testing with no block' do
+      expect(%w(one two three).my_each).to be_an Enumerator
+    end
+
+    it 'my_each when self is a hash' do
+      expect(my_hash.each { |key, value| "k: #{key}, v: #{value}" }).to eql({:min=>2, :max=>5})
     end
   end
 
@@ -22,7 +28,11 @@ describe Enumerable do
     end
 
     it "my_each_with_index iteration testing with no block" do
-      expect(arr.my_each_with_index {|i, j|}).to eql(arr.each_with_index {|i, j|})
+      expect(arr.my_each_with_index).to be_an Enumerator
+    end
+
+    it 'my_each_with_index when self is a hash' do
+      expect(my_hash.my_each_with_index { |key, value| "k: #{key}, v: #{value}" }).to eql({:min=>2, :max=>5})
     end
   end
 
@@ -32,7 +42,7 @@ describe Enumerable do
     end
 
     it 'my_select iteration testing with no block' do
-      expect(arr.my_select(&:odd?)).to eql(arr.select(&:odd?))
+      expect(arr.my_select).to be_an Enumerator
     end
 
     it 'Fetch those greater than 0' do
@@ -41,8 +51,8 @@ describe Enumerable do
   end
 
   describe '#my_all?' do
-    it 'check if all items are odd' do
-      expect([3, 5, 7, 11].my_all?(&:odd?)).to eql(true)
+    it "checks a block that never returns false or nil" do
+      expect(arr.my_all?(proc { |num| num <= highest_num } )).to eql(true)
     end
 
     it 'check if all items are even' do
@@ -103,6 +113,10 @@ describe Enumerable do
 
     it 'intechanges the array components' do
       expect([false, true].my_map(&:!)).to eql([true, false])
+    end
+
+    it "my_map iteration testing with no block" do
+      expect(%w(one two three).my_map).to be_an Enumerator
     end
   end
 

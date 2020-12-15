@@ -162,7 +162,6 @@ def multiply_els(parameter)
   parameter.my_inject { |sum, x| sum * x }
 end
 
-# 1. my_each
 # puts 'my_each'
 # puts '-------'
 # puts [1, 2, 3].my_each { |elem| print "#{elem + 1} " } # => 2 3 4
