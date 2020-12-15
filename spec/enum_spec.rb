@@ -1,11 +1,17 @@
 require_relative '../main.rb'
 
 describe Enumerable do
+  arr = [3, 4, 7, 1, 2, 8]
+
   describe '#my_each' do
     it 'Adding 1 to each array item' do
       array = []
       [1, 2, 3].my_each { |x| array.push(x + 1) }
       expect(array).to eql([2, 3, 4])
+    end
+
+    it "my_each iteration testing with no block" do
+      expect(arr.my_each {|i|}).to eql(arr.each {|i|})
     end
   end
 
@@ -14,11 +20,19 @@ describe Enumerable do
       [1, 2, 3].my_each_with_index { |elem, idx| "#{elem} : #{idx}" }
       expect([1, 0, 2, 1, 3, 2]).to eql([1, 0, 2, 1, 3, 2])
     end
+
+    it "my_each_with_index iteration testing with no block" do
+      expect(arr.my_each_with_index {|i, j|}).to eql(arr.each_with_index {|i, j|})
+    end
   end
 
   describe '#my_select' do
     it 'Fetch even numbers' do
       expect([1, 2, 3, 8].my_select(&:even?)).to eql([2, 8])
+    end
+
+    it 'my_select iteration testing with no block' do
+      expect(arr.my_select(&:odd?)).to eql(arr.select(&:odd?))
     end
 
     it 'Fetch those greater than 0' do
