@@ -55,40 +55,56 @@ describe Enumerable do
       expect(arr.my_all?(proc { |num| num <= highest_num } )).to eql(true)
     end
 
-    it 'check if all items are even' do
-      expect([2, 4, 6, 7].my_all?(&:even?)).to eql(false)
+    it 'check if the block returns false or nil' do
+      expect([2, 4, 6, 8].my_all?(&:even?)).to eql(true)
     end
 
-    it 'check if all items are integers' do
-      expect([1, 2, 3].my_all?(Integer)).to eql(true)
+    it 'check if no block or argument is given' do
+      expect([1, 2, 3].my_all?).to eql(true)
+    end
+
+    it 'check if one of the collection members is false or nil' do
+      array = [1, false, 'hi', []]
+      expect(array.my_all?).to eql(true)
     end
   end
 
   describe '#my_any?' do
-    it 'check if any of the numbers is even' do
-      expect([7, 10, 4, 5].my_any?(&:even?)).to eql(true)
+    it 'checks a block that never returns false or nil' do
+      array = [7, 10, 4, 5]
+      expect(array.my_any?(10)).to eql(true)
     end
 
-    it 'check if a particular character is available' do
-      expect(%w[q r s t].my_any? { |char| 'aeiou'.include?(char) }).to eql(false)
+    it 'check if the block returns false or nil' do
+      expect(%w[q r s t i].my_any? { |char| 'aeiou'.include?(char) }).to eql(true)
     end
 
-    it 'check if a number is present' do
-      expect([1.1, nil, false].my_any?(Numeric)).to eql(true)
+    it 'check if no block or argument is given' do
+      expect([1.1, nil, false].my_any?).to eql(true)
+    end
+
+    it 'check if one of the collection members is false or nil' do
+      array = [1, false, 'hi', []]
+      expect(array.my_any?).to eql(true)
     end
   end
 
   describe '#my_none' do
-    it 'checks if none of the numbers is even' do
-      expect([3, 5, 7, 11].my_none?(&:even?)).to eql(true)
+    it 'checks a block that never returns false or nil' do
+      expect([3, 5, 7, 11].my_none?(1)).to eql(true)
     end
 
-    it 'checks if none of the numbers is greater than 4' do
+    it 'check if the block returns false or nil' do
       expect([1, 2, 3, 4].my_none? { |x| x > 4 }).to eql(true)
     end
 
-    it 'checks if the array contains a word with a specific letter' do
-      expect(%w[sushi pizza burrito].my_none? { |word| word[0] == 'a' }).to eql(true)
+    it 'check if no block or argument is given' do
+      expect([1, 2, 3, 4].my_none?).to eql(false)
+    end
+
+    it 'check if one of the collection members is false or nil' do
+      array = [1, false, 'hi', []]
+      expect(array.my_none?).to eql(false)
     end
   end
 
