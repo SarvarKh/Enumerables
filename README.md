@@ -6,6 +6,14 @@
 - Ruby
 - VS code
 
+## RSpec tests
+
+To run RSpec tests to check Enumerable methods, you will need to:
+
+- Open your CLI (Command Line Interface)
+- Navigate to the project root directory
+- Run 'rspec' into your CLI.
+
 ## Authors
 
 👤 **Sarvar Khalimov**
